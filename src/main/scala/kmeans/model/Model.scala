@@ -1,10 +1,8 @@
 package kmeans.model
 
+/* 実装完了 */
 class Model(data: Seq[List[Double]], MAXTIME: Int, verbose: Boolean) {
   val points: Seq[Point] = data.map(new Point(_))
-
-  private var time: Int = 0
-
   val dimension = points(0).coord.size
 
   private var clusters: Seq[Point] =
@@ -12,9 +10,10 @@ class Model(data: Seq[List[Double]], MAXTIME: Int, verbose: Boolean) {
 
   points.foreach(_.cluster = clusters)
 
-  def iterate = for(i <- 0 to MAXTIME) update
+  private var time: Int = 0
+  def iterate = for (t <- 0 to MAXTIME) { time = t; update }
 
-  def update = {
+  private def update = {
     points.foreach(_.updateResponsibilities)
     val totalResp = for (i <- 0 to dimension - 1)
       yield points.map(_.responsibilities(i)).sum
