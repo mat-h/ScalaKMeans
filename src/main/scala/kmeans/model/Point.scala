@@ -18,6 +18,20 @@ class Point(val coord: List[Double]) {
   )
   
   def exponential(x: Double):Double = Math.exp((-1.0) * 100 * x)
+  
+  def contributionVector: Seq[Point] = {
+    val s = responsibilities.sum
+    responsibilities
+      .map(_/s)
+      .map(ratio => coord.map(_*ratio))
+      .map(new Point(_))
+  }
+  
+  def +(other: Point) = new Point(
+      coord.zip(other.coord)
+      .map(p => p._1 + p._2))
+  
+  def /(divisor: Double) = new Point(coord.map(_/divisor))
 }
 
 object Point {

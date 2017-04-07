@@ -7,7 +7,7 @@ class Model(data: Seq[List[Double]], MAXTIME: Int, verbose: Boolean) {
 
   val dimension = points(0).coord.size
 
-  private val clusters: Seq[Point] =
+  private var clusters: Seq[Point] =
     for (i <- 1 to dimension) yield Point.randomPoint
 
   points.foreach(_.cluster = clusters)
@@ -23,8 +23,19 @@ class Model(data: Seq[List[Double]], MAXTIME: Int, verbose: Boolean) {
     points.foreach(_.updateResponsibilities)
     val totalResp = for (i <- 0 to dimension-1)
       yield points.map(_.responsibilities(i)).sum
-    println(totalResp.map(_.toString).mkString(","))
+    clusters = points
+      .map(_.contributionVector.reduce(_+_))
+      .zip(totalResp)
+      .map(p => p._1 / p._2)
+    // println(totalResp.map(_.toString).mkString(","))
   }
 
-  def dump = {}
+  def dump = {
+    println("clusters state (time=" + time + "): ");
+    (0 to dimension-1).foreach(i => {
+      println("cluster " + i + "'s total weight is " + 
+				points.map(_.responsibilities(i)).sum
+				+ ". center coordinates are " + clusters(i))
+    })
+  }
 }
