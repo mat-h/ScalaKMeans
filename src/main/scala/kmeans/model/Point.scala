@@ -25,17 +25,18 @@ class Point(val coord: List[Double]) {
         .map(Math.pow(_, 2))
         .sum)
 
-    def exponential(x: Double): Double = Math.exp((-1.0) * 100 * x)
+    def exponential(x: Double): Double = Math.exp((-1.0) * 1 * x)
 
+    assert(cluster.map(distance).map(exponential).sum != 0)
+    
     responsibilities = cluster.map(distance).map(exponential)
   }
 
-  def contributionVector: Seq[Point] = {
-    val s = responsibilities.sum
-    responsibilities
-      .map(_ / s)
-      .map(normalizedResp => coord.map(_ * normalizedResp))
-      .map(new Point(_))
+  def contributionVectors(): Seq[Point] = {
+    def normalize = (array: Seq[Double]) => array.map(_/array.sum)
+
+    normalize(responsibilities)
+      .map(r => new Point(coord.map(_ * r)))
   }
 }
 
