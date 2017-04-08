@@ -46,8 +46,7 @@ class Model(data: Seq[List[Double]], MAXTIME: Int, verbose: Boolean) {
     println("clusters state (time=" + time + "): ")
     println("center coordinates are " + clusters)
     dim_index.foreach(i => {
-      println("cluster " + i + "'s total weight is " +
-        totalResp(i))
+      println("cluster " + i + "'s total weight is " + totalResp(i))
     })
   }
 

@@ -3,7 +3,7 @@ package kmeans.model
 import scala.util.Random
 
 class Point(val coord: List[Double]) {
-  override def toString = coord.map(_.toString).mkString(",")
+  override def toString = coord.mkString(",") + " resp=" + responsibilities.mkString(",")
 
   def +(other: Point) = new Point(
     coord.zip(other.coord)
@@ -25,7 +25,7 @@ class Point(val coord: List[Double]) {
         .map(Math.pow(_, 2))
         .sum)
 
-    def exponential(x: Double): Double = Math.exp((-1.0) * 1 * x)
+    def exponential(x: Double): Double = Math.exp((-1.0) * 0.25 * x)
 
     assert(cluster.map(distance).map(exponential).sum != 0)
     
