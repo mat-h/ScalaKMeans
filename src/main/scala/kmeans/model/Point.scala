@@ -5,6 +5,16 @@ import scala.util.Random
 class Point(val coord: List[Double]) {
   override def toString = coord.map(_.toString).mkString(",")
 
+  def +(other: Point) = new Point(
+    coord.zip(other.coord)
+      .map(p => p._1 + p._2))
+
+  def *(multiplier: Double) = new Point(coord.map(_ * multiplier))
+
+  def /(divisor: Double) = new Point(coord.map(_ / divisor))
+
+  /* KMeans needs cluster, responsibilities, contributions */
+
   var cluster: Seq[Point] = Nil
 
   var responsibilities: Seq[Double] = Nil
@@ -27,14 +37,6 @@ class Point(val coord: List[Double]) {
       .map(normalizedResp => coord.map(_ * normalizedResp))
       .map(new Point(_))
   }
-
-  def +(other: Point) = new Point(
-    coord.zip(other.coord)
-      .map(p => p._1 + p._2))
-
-  def *(multiplier: Double) = new Point(coord.map(_ * multiplier))
-
-  def /(divisor: Double) = new Point(coord.map(_ / divisor))
 }
 
 object Point {
